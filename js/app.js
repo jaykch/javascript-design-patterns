@@ -4,28 +4,31 @@ var log = function (x) {
     console.log(x);
 };
 
+//set initial player position
 const initialPlayerXPos = 200;
 const initialPlayerYPos = 380;
+
+//set player movement count to move player appropriately across each tile
 const playerLeftMoveCount = -100;
 const playerRightMoveCount = 100;
 const playerUpMoveCount = -83;
 const playerDownMoveCount = 83;
 
-const xPlayerBounds = [0,400];
+//specify boundaries for player
+const xPlayerBounds = [0, 400];
 const yPlayerBounds = [0, 380];
 
-const xEnemyBounds = [-80,500];
+//specify boundaries for enemies
+const xEnemyBounds = [-80, 500];
 
+//specify positions for enemies for each row
 const enemyRowPos = [60, 143, 226];
+const playerRowPos = [48, 131, 214];
 
 //todo: maybe randomize it in a method
 
 var randomSpeed = function () {
     return Math.floor((Math.random() * 200) + 50);
-};
-
-var randomEnemyPosition = function () {
-
 };
 
 var Enemy = function (row) {
@@ -70,11 +73,24 @@ Enemy.prototype.update = function (dt) {
         this.x = xEnemyBounds[0];
         this.speed = randomSpeed();
     }
+    this._checkCollision();
+    //log(this.x, this.y);
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+//Check collision with player
+Enemy.prototype._checkCollision = function () {
+
+    if (((this.y == enemyRowPos[2] && player.y == playerRowPos[2]) ||
+        (this.y == enemyRowPos[1] && player.y == playerRowPos[1]) ||
+        (this.y == enemyRowPos[0] && player.y == playerRowPos[0]))
+        && player.x < this.x + 80 && player.x > this.x - 60) {
+        player._reset('complete');
+    }
 };
 
 // Now write your own player class
@@ -91,13 +107,17 @@ Player.prototype.update = function () {
 
 };
 
-Player.prototype.reset = function (coordinate) {
+Player.prototype._reset = function (coordinate) {
     switch (coordinate) {
         case 'x':
             this.x = initialPlayerXPos;
             break;
         case 'y':
             this.y = initialPlayerYPos;
+            break;
+        case 'complete':
+            this.y = initialPlayerYPos;
+            this.x = initialPlayerXPos;
             break;
     }
 };
@@ -107,7 +127,7 @@ Player.prototype.render = function () {
 };
 
 //move method for moving the player in each direction
-Player.prototype.move = function (direction) {
+Player.prototype._move = function (direction) {
     switch (direction) {
         case 'left':
             this.x += playerLeftMoveCount;
@@ -127,35 +147,34 @@ Player.prototype.move = function (direction) {
 
 Player.prototype.handleInput = function (direction) {
     //use the move method to move the player
-    this.move(direction);
+
+    this._move(direction);
     //resetting player position if it hits a wall
     if (this.y < yPlayerBounds[0]) {
-        this.reset('y');
-        this.reset('x');
+        this._reset('complete');
     }
     //log("updating");
     if (this.x < xPlayerBounds[0]) {
         this.x = xPlayerBounds[0];
-        log(this.x);
     }
     else if (this.x > xPlayerBounds[1]) {
         this.x = xPlayerBounds[1];
-        log(this.x);
     }
     else if (this.y > yPlayerBounds[1]) {
-        this.reset('y');
+        this._reset('y');
     }
+
 };
 
 // Now instantiate your objects.
-var bug1 = new Enemy(1);
-var bug2 = new Enemy(1);
-var bug3 = new Enemy(2);
-var bug4 = new Enemy(2);
-var bug5 = new Enemy(3);
-var bug6 = new Enemy(3);
 // Place all enemy objects in an array called allEnemies
-var allEnemies = [bug1, bug2, bug3, bug4, bug5, bug6];
+var allEnemies = [
+    new Enemy(3),
+    new Enemy(3),
+    new Enemy(2),
+    new Enemy(1),
+    new Enemy(1)
+];
 // Place the player object in a variable called player
 var player = new Player();
 
@@ -169,21 +188,6 @@ document.addEventListener('keyup', function (e) {
         39: 'right',
         40: 'down'
     };
-
-    /*switch (allowedKeys[e.keyCode]) {
-     case 'left':
-     player.x += -100;
-     break;
-     case 'right':
-     player.x += 100;
-     break;
-     case 'up':
-     player.y += -83;
-     break;
-     case 'down':
-     player.y += 83;
-     break;
-     }*/
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
