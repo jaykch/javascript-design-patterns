@@ -25,12 +25,6 @@ const xEnemyBounds = [-80, 500];
 const enemyRowPos = [60, 143, 226];
 const playerRowPos = [48, 131, 214];
 
-//todo: maybe randomize it in a method
-
-var randomSpeed = function () {
-    return Math.floor((Math.random() * 200) + 50);
-};
-
 var Enemy = function (row) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -38,7 +32,7 @@ var Enemy = function (row) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.speed = randomSpeed();
+    this.speed = this.randomiseSpeed();
     this.x = this.setPosition();
 
     //switch statement to select each row by parsing in an argument
@@ -57,6 +51,10 @@ var Enemy = function (row) {
 };
 
 //todo: design setters maybe
+Enemy.prototype.randomiseSpeed = function () {
+    return Math.floor((Math.random() * 200) + 50);
+};
+
 Enemy.prototype.setPosition = function () {
     return Math.floor((Math.random() * 350) + 1);
 };
@@ -71,10 +69,9 @@ Enemy.prototype.update = function (dt) {
     //if statement to reset the position of the bug once it reaches the boundaries
     if (this.x > xEnemyBounds[1]) {
         this.x = xEnemyBounds[0];
-        this.speed = randomSpeed();
+        this.speed = this.randomiseSpeed();
     }
     this._checkCollision();
-    //log(this.x, this.y);
 };
 
 // Draw the enemy on the screen, required method for game
@@ -103,8 +100,6 @@ var Player = function () {
 };
 
 Player.prototype.update = function () {
-    //todo: add methods for resetting position
-
 };
 
 Player.prototype._reset = function (coordinate) {
