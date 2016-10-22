@@ -65,20 +65,14 @@ var enemy = {
         }
     }
 };
-
 enemy.init();
 
 
+//Instantiating enemies
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
 var allEnemies = [enemy];
+
+//creating player
 var player = {
 
     //methods
@@ -149,6 +143,7 @@ var player = {
     }
 };
 
+//initialising player
 player.init();
 
 // This listens for key presses and sends the keys to your

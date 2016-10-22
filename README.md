@@ -1,4 +1,4 @@
-Comparision and Demonstration Javascript Design Patterns
+Comparision and Demonstration of Javascript Design Patterns
 ===============================
 
 This project consists of the design of Udacity Front-end Nanodegree
