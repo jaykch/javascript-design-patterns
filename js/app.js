@@ -71,7 +71,7 @@ Enemy.prototype.update = function (dt) {
         this.x = xEnemyBounds[0];
         this.speed = this.randomiseSpeed();
     }
-    this._checkCollision();
+    this.checkCollision();
 };
 
 // Draw the enemy on the screen, required method for game
@@ -80,13 +80,13 @@ Enemy.prototype.render = function () {
 };
 
 //Check collision with player
-Enemy.prototype._checkCollision = function () {
+Enemy.prototype.checkCollision = function () {
 
     if (((this.y == enemyRowPos[2] && player.y == playerRowPos[2]) ||
         (this.y == enemyRowPos[1] && player.y == playerRowPos[1]) ||
         (this.y == enemyRowPos[0] && player.y == playerRowPos[0]))
         && player.x < this.x + 80 && player.x > this.x - 60) {
-        player._reset('complete');
+        player.reset('complete');
     }
 };
 
@@ -102,7 +102,7 @@ var Player = function () {
 Player.prototype.update = function () {
 };
 
-Player.prototype._reset = function (coordinate) {
+Player.prototype.reset = function (coordinate) {
     switch (coordinate) {
         case 'x':
             this.x = initialPlayerXPos;
@@ -122,7 +122,7 @@ Player.prototype.render = function () {
 };
 
 //move method for moving the player in each direction
-Player.prototype._move = function (direction) {
+Player.prototype.move = function (direction) {
     switch (direction) {
         case 'left':
             this.x += playerLeftMoveCount;
@@ -143,10 +143,10 @@ Player.prototype._move = function (direction) {
 Player.prototype.handleInput = function (direction) {
     //use the move method to move the player
 
-    this._move(direction);
+    this.move(direction);
     //resetting player position if it hits a wall
     if (this.y < yPlayerBounds[0]) {
-        this._reset('complete');
+        this.reset('complete');
     }
     //log("updating");
     if (this.x < xPlayerBounds[0]) {
@@ -156,7 +156,7 @@ Player.prototype.handleInput = function (direction) {
         this.x = xPlayerBounds[1];
     }
     else if (this.y > yPlayerBounds[1]) {
-        this._reset('y');
+        this.reset('y');
     }
 
 };
