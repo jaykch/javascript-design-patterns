@@ -4,7 +4,7 @@ var log = function (x) {
     console.log(x);
 };
 
-//permanent row positions for enemy and player
+//permanent row positions for y coordinates of enemy and player
 const enemyRowPos = [60, 143, 226];
 const playerRowPos = [48, 131, 214];
 
