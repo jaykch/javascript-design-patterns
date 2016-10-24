@@ -12,12 +12,12 @@ var Enemy = function (x, y) {
     var sprite = 'images/enemy-bug.png';
     var speed;
 
-    var randomiseSpeed = function () {
+    var _randomiseSpeed = function () {
         speed = Math.floor((Math.random() * 300) + 50);
     };
-    randomiseSpeed();
+    _randomiseSpeed();
 
-    var collision = function(){
+    var _collision = function(){
         if (((y == enemyRowPos[2] && player.getPlayerCoords('y') == playerRowPos[2]) ||
             (y == enemyRowPos[1] && player.getPlayerCoords('y') == playerRowPos[1]) ||
             (y == enemyRowPos[0] && player.getPlayerCoords('y') == playerRowPos[0]))
@@ -26,17 +26,17 @@ var Enemy = function (x, y) {
         }
     };
     var update = function (dt) {
-        enemyBounds();
-        collision();
+        _enemyBounds();
+        _collision();
         x += speed * dt;
     };
     var render = function () {
         ctx.drawImage(Resources.get(sprite), x, y);
     };
-    var enemyBounds = function () {
+    var _enemyBounds = function () {
         if (x > 500) {
             x = -90;
-            randomiseSpeed();
+            _randomiseSpeed();
         }
     };
 
@@ -50,6 +50,7 @@ var allEnemies = [];
 
 var generateEnemies = function(numberOfEnemies){
     for (var i = 0; i < numberOfEnemies; i++) {
+        //randomize enemies between the 3 row positions and different x coordinates across the game
         allEnemies.push(Enemy(Math.floor((Math.random() * 350) + 1),enemyRowPos[Math.floor((Math.random() * 3) + 1)-1]));
     }
 };
@@ -66,7 +67,7 @@ var player = (function () {
 
 
     var update = function () {
-        playerBounds();
+        _playerBounds();
     };
     var getPlayerCoords = function (coordinate) {
         switch (coordinate) {
@@ -102,7 +103,7 @@ var player = (function () {
         x = 200;
         y = 380;
     };
-    var playerBounds = function () {
+    var _playerBounds = function () {
         if (y < 0) {
             x = 200;
             y = 380;
